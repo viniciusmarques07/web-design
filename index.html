@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SportWhip — Chicotes Esportivos</title>
+    <meta
+        name="description"
+        content="Chicotes esportivos para treino, precisão e performance."
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container nav">
+            <a href="#" class="logo">
+                <span>SPORT</span>WHIP
+            </a>
+
+            <nav class="menu">
+                <a href="#inicio">Início</a>
+                <a href="#produtos">Produtos</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#contato">Contato</a>
+            </nav>
+
+            <button class="cart-button" id="cartButton">
+                🛒 Carrinho
+                <span id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero" id="inicio">
+            <div class="container hero-content">
+
+                <div class="hero-text">
+                    <span class="tag">PERFORMANCE • PRECISÃO • CONTROLE</span>
+
+                    <h1>
+                        Equipamento feito para
+                        <strong>quem busca performance.</strong>
+                    </h1>
+
+                    <p>
+                        Chicotes esportivos desenvolvidos para treinos,
+                        demonstrações e competições de precisão.
+                    </p>
+
+                    <a href="#produtos" class="button primary">
+                        Ver produtos
+                    </a>
+                </div>
+
+                <div class="hero-product">
+                    <div class="product-circle">
+                        <div class="whip-illustration"></div>
+                    </div>
+
+                    <div class="floating-card">
+                        <strong>Alta performance</strong>
+                        <span>Materiais selecionados</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BENEFÍCIOS -->
+        <section class="benefits">
+            <div class="container benefits-grid">
+
+                <div class="benefit">
+                    <span>⚡</span>
+                    <div>
+                        <h3>Precisão</h3>
+                        <p>Projetados para movimentos controlados.</p>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <span>🏆</span>
+                    <div>
+                        <h3>Performance</h3>
+                        <p>Equipamentos para treino e competição.</p>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <span>🛡️</span>
+                    <div>
+                        <h3>Qualidade</h3>
+                        <p>Construção pensada para uso esportivo.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PRODUTOS -->
+        <section class="products-section" id="produtos">
+            <div class="container">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="tag">NOSSO CATÁLOGO</span>
+                        <h2>Escolha seu equipamento</h2>
+                    </div>
+
+                    <select id="categoryFilter">
+                        <option value="todos">Todos</option>
+                        <option value="treino">Treino</option>
+                        <option value="competicao">Competição</option>
+                        <option value="iniciante">Iniciante</option>
+                    </select>
+                </div>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Produtos inseridos pelo JavaScript -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SOBRE -->
+        <section class="about" id="sobre">
+            <div class="container about-grid">
+
+                <div class="about-image">
+                    <div class="about-badge">
+                        <strong>10+</strong>
+                        <span>anos de experiência</span>
+                    </div>
+                </div>
+
+                <div class="about-text">
+                    <span class="tag">SOBRE A SPORTWHIP</span>
+
+                    <h2>Equipamento para levar seu treino a outro nível.</h2>
+
+                    <p>
+                        A SportWhip nasceu com o objetivo de oferecer equipamentos
+                        esportivos de qualidade para praticantes que valorizam
+                        precisão, técnica e desempenho.
+                    </p>
+
+                    <p>
+                        Nossa linha foi pensada para diferentes níveis de
+                        experiência, desde quem está começando até atletas
+                        que buscam equipamentos especializados.
+                    </p>
+
+                    <a href="#contato" class="button secondary">
+                        Fale conosco
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTATO -->
+        <section class="contact" id="contato">
+            <div class="container">
+
+                <div class="contact-heading">
+                    <span class="tag">FALE CONOSCO</span>
+                    <h2>Tem alguma dúvida?</h2>
+                    <p>
+                        Envie uma mensagem e nossa equipe entrará em contato.
+                    </p>
+                </div>
+
+                <form id="contactForm" class="contact-form">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="Seu nome"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="seu@email.com"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Mensagem</label>
+                        <textarea
+                            id="message"
+                            rows="5"
+                            placeholder="Como podemos ajudar?"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="button primary">
+                        Enviar mensagem
+                    </button>
+
+                    <p id="formMessage" class="form-message"></p>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CARRINHO -->
+    <aside class="cart" id="cart">
+
+        <div class="cart-header">
+            <h2>Seu carrinho</h2>
+            <button id="closeCart">×</button>
+        </div>
+
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Seu carrinho está vazio.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <strong id="cartTotal">R$ 0,00</strong>
+            </div>
+
+            <button class="button primary checkout" id="checkoutButton">
+                Finalizar pedido
+            </button>
+        </div>
+
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <a href="#" class="logo">
+                    <span>SPORT</span>WHIP
+                </a>
+
+                <p>
+                    Performance, técnica e precisão.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <a href="#inicio">Início</a>
+                <a href="#produtos">Produtos</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#contato">Contato</a>
+            </div>
+
+            <p class="copyright">
+                © 2026 SportWhip. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
