@@ -1,3 +1,7 @@
+// ==========================================
+// PRODUTOS
+// ==========================================
+
 const products = [
     {
         id: 1,
@@ -49,23 +53,45 @@ const products = [
     }
 ];
 
+
+// ==========================================
+// ESTADO DO CARRINHO
+// ==========================================
+
+// Array que armazena os produtos do carrinho
 let cart = [];
+
+
+// ==========================================
+// ELEMENTOS DO HTML
+// ==========================================
 
 const productsGrid = document.getElementById("productsGrid");
 const categoryFilter = document.getElementById("categoryFilter");
 
 const cartButton = document.getElementById("cartButton");
-const cart = document.getElementById("cart");
-const closeCart = document.getElementById("closeCart");
+
+// IMPORTANTE:
+// "cartPanel" é o elemento visual do carrinho.
+// Não usamos mais "cart" aqui para evitar conflito.
+const cartPanel = document.getElementById("cart");
+
+const closeCartButton = document.getElementById("closeCart");
 const overlay = document.getElementById("overlay");
 
 const cartItems = document.getElementById("cartItems");
 const cartCount = document.getElementById("cartCount");
 const cartTotal = document.getElementById("cartTotal");
+
 const checkoutButton = document.getElementById("checkoutButton");
 
+const contactForm = document.getElementById("contactForm");
+const formMessage = document.getElementById("formMessage");
 
+
+// ==========================================
 // FORMATAÇÃO DE PREÇO
+// ==========================================
 
 function formatPrice(value) {
     return value.toLocaleString("pt-BR", {
@@ -75,13 +101,22 @@ function formatPrice(value) {
 }
 
 
-// MOSTRAR PRODUTOS
+// ==========================================
+// RENDERIZAR PRODUTOS
+// ==========================================
 
 function renderProducts(category = "todos") {
 
-    const filteredProducts = category === "todos"
-        ? products
-        : products.filter(product => product.category === category);
+    if (!productsGrid) {
+        return;
+    }
+
+    const filteredProducts =
+        category === "todos"
+            ? products
+            : products.filter(
+                product => product.category === category
+            );
 
     productsGrid.innerHTML = "";
 
@@ -114,7 +149,7 @@ function renderProducts(category = "todos") {
 
                     <button
                         class="add-button"
-                        onclick="addToCart(${product.id})"
+                        data-product-id="${product.id}"
                     >
                         Adicionar
                     </button>
@@ -124,35 +159,62 @@ function renderProducts(category = "todos") {
             </div>
         `;
 
+        // Evita onclick inline no HTML
+        const addButton = card.querySelector(".add-button");
+
+        addButton.addEventListener("click", () => {
+            addToCart(product.id);
+        });
+
         productsGrid.appendChild(card);
     });
 }
 
 
-// FILTRO
+// ==========================================
+// FILTRO DE CATEGORIA
+// ==========================================
 
-categoryFilter.addEventListener("change", () => {
-    renderProducts(categoryFilter.value);
-});
+if (categoryFilter) {
+
+    categoryFilter.addEventListener("change", () => {
+
+        renderProducts(categoryFilter.value);
+
+    });
+
+}
 
 
+// ==========================================
 // ADICIONAR AO CARRINHO
+// ==========================================
 
 function addToCart(productId) {
 
-    const product = products.find(item => item.id === productId);
+    const product = products.find(
+        item => item.id === productId
+    );
 
-    if (!product) return;
+    if (!product) {
+        return;
+    }
 
-    const existingItem = cart.find(item => item.id === productId);
+    const existingItem = cart.find(
+        item => item.id === productId
+    );
 
     if (existingItem) {
-        existingItem.quantity++;
+
+        existingItem.quantity += 1;
+
     } else {
+
         cart.push({
             ...product,
             quantity: 1
         });
+
     }
 
     updateCart();
@@ -161,9 +223,15 @@ function addToCart(productId) {
 }
 
 
+// ==========================================
 // ATUALIZAR CARRINHO
+// ==========================================
 
 function updateCart() {
+
+    if (!cartItems) {
+        return;
+    }
 
     cartItems.innerHTML = "";
 
@@ -185,9 +253,7 @@ function updateCart() {
 
             cartItem.innerHTML = `
                 <div>
-                    <h4>
-                        ${item.name}
-                    </h4>
+                    <h4>${item.name}</h4>
 
                     <p>
                         ${formatPrice(item.price)}
@@ -197,104 +263,214 @@ function updateCart() {
 
                 <button
                     class="remove-item"
-                    onclick="removeFromCart(${item.id})"
+                    data-product-id="${item.id}"
                 >
                     Remover
                 </button>
             `;
 
+            const removeButton =
+                cartItem.querySelector(".remove-item");
+
+            removeButton.addEventListener("click", () => {
+                removeFromCart(item.id);
+            });
+
             cartItems.appendChild(cartItem);
         });
     }
 
+
+    // Quantidade total de produtos
+
     const quantity = cart.reduce(
-        (total, item) => total + item.quantity,
+        (total, item) => {
+            return total + item.quantity;
+        },
         0
     );
+
+
+    // Valor total
 
     const total = cart.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) => {
+            return total + item.price * item.quantity;
+        },
         0
     );
 
-    cartCount.textContent = quantity;
-    cartTotal.textContent = formatPrice(total);
+
+    if (cartCount) {
+        cartCount.textContent = quantity;
+    }
+
+    if (cartTotal) {
+        cartTotal.textContent = formatPrice(total);
+    }
 }
 
 
-// REMOVER PRODUTO
+// ==========================================
+// REMOVER DO CARRINHO
+// ==========================================
 
 function removeFromCart(productId) {
 
-    cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(
+        item => item.id !== productId
+    );
 
     updateCart();
 }
 
 
+// ==========================================
 // ABRIR CARRINHO
+// ==========================================
 
 function openCart() {
-    cart.classList.add("active");
+
+    if (!cartPanel || !overlay) {
+        return;
+    }
+
+    cartPanel.classList.add("active");
+
     overlay.classList.add("active");
 }
 
 
+// ==========================================
 // FECHAR CARRINHO
+// ==========================================
 
-function closeCartMenu() {
-    cart.classList.remove("active");
-    overlay.classList.remove("active");
-}
+function closeCart() {
 
-cartButton.addEventListener("click", openCart);
-
-closeCart.addEventListener("click", closeCartMenu);
-
-overlay.addEventListener("click", closeCartMenu);
-
-
-// FINALIZAR PEDIDO
-
-checkoutButton.addEventListener("click", () => {
-
-    if (cart.length === 0) {
-        alert("Seu carrinho está vazio.");
+    if (!cartPanel || !overlay) {
         return;
     }
 
-    const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    );
+    cartPanel.classList.remove("active");
 
-    alert(
-        `Pedido iniciado!\n\nTotal: ${formatPrice(total)}\n\n` +
-        `Em uma loja real, aqui você poderia integrar ` +
-        `Pix, cartão ou outro sistema de pagamento.`
-    );
+    overlay.classList.remove("active");
+}
+
+
+// ==========================================
+// EVENTOS DO CARRINHO
+// ==========================================
+
+if (cartButton) {
+
+    cartButton.addEventListener("click", () => {
+        openCart();
+    });
+
+}
+
+if (closeCartButton) {
+
+    closeCartButton.addEventListener("click", () => {
+        closeCart();
+    });
+
+}
+
+if (overlay) {
+
+    overlay.addEventListener("click", () => {
+        closeCart();
+    });
+
+}
+
+
+// ==========================================
+// FINALIZAR PEDIDO
+// ==========================================
+
+if (checkoutButton) {
+
+    checkoutButton.addEventListener("click", () => {
+
+        if (cart.length === 0) {
+
+            alert("Seu carrinho está vazio.");
+
+            return;
+        }
+
+
+        const total = cart.reduce(
+            (sum, item) => {
+                return sum + item.price * item.quantity;
+            },
+            0
+        );
+
+
+        alert(
+            "Pedido iniciado!\n\n" +
+            "Total: " + formatPrice(total) + "\n\n" +
+            "O próximo passo seria integrar " +
+            "Pix, cartão ou outro sistema de pagamento."
+        );
+
+    });
+
+}
+
+
+// ==========================================
+// FORMULÁRIO DE CONTATO
+// ==========================================
+
+if (contactForm) {
+
+    contactForm.addEventListener("submit", (event) => {
+
+        event.preventDefault();
+
+        const nameInput =
+            document.getElementById("name");
+
+        const name =
+            nameInput ? nameInput.value.trim() : "";
+
+
+        if (formMessage) {
+
+            formMessage.textContent =
+                `Obrigado, ${name}! Sua mensagem foi enviada.`;
+
+        }
+
+
+        contactForm.reset();
+
+    });
+
+}
+
+
+// ==========================================
+// FECHAR CARRINHO COM ESC
+// ==========================================
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+        closeCart();
+    }
+
 });
 
 
-// FORMULÁRIO
-
-const contactForm = document.getElementById("contactForm");
-const formMessage = document.getElementById("formMessage");
-
-contactForm.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-    const name = document.getElementById("name").value;
-
-    formMessage.textContent =
-        `Obrigado, ${name}! Sua mensagem foi enviada.`;
-
-    contactForm.reset();
-});
-
-
+// ==========================================
 // INICIALIZAÇÃO
+// ==========================================
 
 renderProducts();
+
 updateCart();
